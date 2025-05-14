@@ -20,16 +20,33 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Define Routes
 app.get('/', (req, res) => {
-  res.send('API is running...');
+  res.send('Restaurant API is running...');
 });
 
-// Define Todo Schema
-const todoSchema = new mongoose.Schema({
-  text: {
+// Define Menu Item Schema
+const menuItemSchema = new mongoose.Schema({
+  name: {
     type: String,
     required: true
   },
-  completed: {
+  description: {
+    type: String,
+    required: true
+  },
+  price: {
+    type: Number,
+    required: true
+  },
+  category: {
+    type: String,
+    required: true,
+    enum: ['appetizer', 'main', 'dessert', 'beverage']
+  },
+  image: {
+    type: String,
+    default: 'default-food.jpg'
+  },
+  featured: {
     type: Boolean,
     default: false
   },
@@ -39,47 +56,59 @@ const todoSchema = new mongoose.Schema({
   }
 });
 
-const Todo = mongoose.model('Todo', todoSchema);
+const MenuItem = mongoose.model('MenuItem', menuItemSchema);
 
-// Todo Routes
-app.get('/api/todos', async (req, res) => {
+// Menu Item Routes
+app.get('/api/menu', async (req, res) => {
   try {
-    const todos = await Todo.find().sort({ createdAt: -1 });
-    res.json(todos);
+    const menuItems = await MenuItem.find().sort({ category: 1 });
+    res.json(menuItems);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-app.post('/api/todos', async (req, res) => {
+app.post('/api/menu', async (req, res) => {
   try {
-    const newTodo = new Todo({
-      text: req.body.text
+    const newMenuItem = new MenuItem({
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      category: req.body.category,
+      image: req.body.image,
+      featured: req.body.featured
     });
-    const savedTodo = await newTodo.save();
-    res.status(201).json(savedTodo);
+    const savedMenuItem = await newMenuItem.save();
+    res.status(201).json(savedMenuItem);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
-app.put('/api/todos/:id', async (req, res) => {
+app.put('/api/menu/:id', async (req, res) => {
   try {
-    const updatedTodo = await Todo.findByIdAndUpdate(
+    const updatedMenuItem = await MenuItem.findByIdAndUpdate(
       req.params.id, 
-      { completed: req.body.completed },
+      { 
+        name: req.body.name,
+        description: req.body.description,
+        price: req.body.price,
+        category: req.body.category,
+        image: req.body.image,
+        featured: req.body.featured
+      },
       { new: true }
     );
-    res.json(updatedTodo);
+    res.json(updatedMenuItem);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
-app.delete('/api/todos/:id', async (req, res) => {
+app.delete('/api/menu/:id', async (req, res) => {
   try {
-    await Todo.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Todo deleted' });
+    await MenuItem.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Menu item deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
