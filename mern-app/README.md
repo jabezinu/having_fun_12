@@ -1,12 +1,14 @@
-# MERN Stack Todo App
+# Delicious Bites - Restaurant Website
 
-A simple Todo application built with the MERN stack (MongoDB, Express, React, Node.js).
+A full-stack restaurant website built with the MERN stack (MongoDB, Express, React, Node.js).
 
 ## Features
 
-- Create, read, update, and delete todos
-- Mark todos as completed
-- Responsive design
+- Display restaurant menu items by category
+- Featured dishes highlighting
+- Responsive design for all device sizes
+- About section with restaurant information
+- Contact form for customer inquiries
 
 ## Prerequisites
 
@@ -33,8 +35,11 @@ npm install
 
 # Create a .env file with the following content
 # PORT=5000
-# MONGO_URI=mongodb://localhost:27017/mern-app
+# MONGO_URI=mongodb://localhost:27017/restaurant-app
 # NODE_ENV=development
+
+# Seed the database with sample menu items
+npm run seed
 
 # Start the server
 npm run dev
@@ -56,13 +61,12 @@ npm run dev
 ## Usage
 
 - Open your browser and go to `http://localhost:5173`
-- Add new todos by typing in the input field and pressing "Add"
-- Click on a todo to mark it as completed
-- Click the "Delete" button to remove a todo
+- Browse the menu by categories: Appetizers, Main Courses, Desserts, and Beverages
+- View restaurant information and contact details
 
 ## Technology Stack
 
-- **MongoDB** - Database
+- **MongoDB** - Database for storing menu items
 - **Express** - Backend framework
 - **React** - Frontend library
 - **Node.js** - JavaScript runtime
@@ -81,5 +85,6 @@ mern-app/
 └── server/             # Node.js backend
     ├── .env            # Environment variables
     ├── index.js        # Main server file
+    ├── seedData.js     # Database seeding script
     └── package.json    # Server dependencies
 ``` 
